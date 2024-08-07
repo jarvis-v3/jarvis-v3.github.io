@@ -1,7 +1,8 @@
-   document.getElementById('submit').addEventListener('click', function() {
-       const message = document.getElementById('message').value;
-       // Di sini kamu akan menambahkan kode untuk mengirim pesan ke model AI
-       // dan menampilkan responnya di `#response`
+   document.addEventListener('DOMContentLoaded', function() {
+       // Tempatkan kode event listener di sini
+       document.getElementById('submit').addEventListener('click', function() {
+           // Kode event click di sini
+       });
    });
 
    // ... (kode sebelumnya)
