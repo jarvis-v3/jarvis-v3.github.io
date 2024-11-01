@@ -1,0 +1,148 @@
+<html>
+<head>
+    <title>Lampiran Dokumentasi Kinerja</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .photo-cell {
+            vertical-align: middle;
+            text-align: center;
+            padding: 0.5rem;
+            width: 33%;
+        }
+        
+        .photo-cell img {
+            max-width: 100%;
+            height: auto;
+            object-fit: contain;
+            display: inline-block;
+        }
+
+        .number-cell {
+            width: auto;
+            white-space: nowrap;
+            padding: 8px 12px;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            margin: 0 auto;
+            width: 100%;
+            max-width: calc(100% - 2rem);
+        }
+
+        table {
+            table-layout: auto;
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+        }
+
+        .activity-cell {
+            text-align: left;
+            padding: 8px;
+        }
+
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+            
+            .table-container {
+                max-width: 100%;
+                margin: 0;
+            }
+            
+            .photo-cell img {
+                max-height: 4cm;
+            }
+        }
+    </style>
+</head>
+<body class="bg-white p-8">
+    <div class="max-w-4xl mx-auto border border-black">
+        <div class="text-center p-4">
+            <h1 class="font-bold text-lg">LAMPIRAN</h1>
+            <h2 class="font-bold text-lg">DOKUMENTASI KINERJA SUB BAGIAN MEKANIKAL POMPA & KELISTRIKAN</h2>
+            <h3 class="font-bold text-lg" id="periodText"></h3>
+        </div>
+        <div class="p-4">
+            <p>Berdasarkan dokumentasi kegiatan dilapangan, berikut lampiran foto kegiatan khusus personal Mekanikal Pompa dan Kelistrikan</p>
+        </div>
+        <div class="mb-4 p-4 no-print">
+            <a href="inputtukin.html" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                Tambah Data
+            </a>
+        </div>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>NO</th>
+                        <th>SEBELUM PEKERJAAN</th>
+                        <th>SEMENTARA PEKERJAAN</th>
+                        <th>PEKERJAAN SELESAI</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <!-- Data will be inserted here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        function loadData() {
+            const existingData = JSON.parse(localStorage.getItem('taskData')) || [];
+            const tableBody = document.getElementById('tableBody');
+            
+            tableBody.innerHTML = '';
+            
+            existingData.forEach((task, index) => {
+                const photoRow = document.createElement('tr');
+                photoRow.innerHTML = `
+                    <td class="number-cell" rowspan="2">${index + 1}</td>
+                    <td class="photo-cell"><img src="${task.sebelum_pekerjaan}" alt="Sebelum Pekerjaan"></td>
+                    <td class="photo-cell"><img src="${task.sementara_pekerjaan}" alt="Sementara Pekerjaan"></td>
+                    <td class="photo-cell"><img src="${task.pekerjaan_selesai}" alt="Pekerjaan Selesai"></td>
+                `;
+                tableBody.appendChild(photoRow);
+
+                const activityRow = document.createElement('tr');
+                activityRow.innerHTML = `
+                    <td colspan="3" class="activity-cell">
+                        <strong>Tanggal:</strong> ${formatDate(task.tanggal)}<br>
+                        <strong>Nama Kegiatan:</strong> ${task.nama_kegiatan}<br>
+                        <strong>Petugas:</strong> ${task.petugas}
+                    </td>
+                `;
+                tableBody.appendChild(activityRow);
+            });
+        }
+
+        function formatDate(dateString) {
+            const options = { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            };
+            return new Date(dateString).toLocaleDateString('id-ID', options);
+        }
+
+        document.addEventListener('DOMContentLoaded', loadData);
+
+        function setPeriod() {
+            const date = new Date();
+            const month = date.toLocaleString('id-ID', { month: 'long' });
+            const year = date.getFullYear();
+            document.getElementById('periodText').textContent = `PERIODE: ${month.toUpperCase()} ${year}`;
+        }
+
+        setPeriod();
+    </script>
+</body>
+</html>
