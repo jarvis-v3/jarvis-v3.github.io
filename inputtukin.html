@@ -1,77 +1,83 @@
-<html>
+<!DOCTYPE html>
+<html lang="id">
 <head>
-    <title>Form Input</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Input Data Tukin</title>
     <link href="css/tailwind.min.css" rel="stylesheet">
 </head>
-<body class="bg-white p-8">
-    <div class="max-w-4xl mx-auto mt-8 border border-black p-4">
-        <h2 class="font-bold text-lg mb-4">Form Input</h2>
-        <form id="taskForm">
+<body class="bg-gray-100">
+    <div class="container mx-auto p-4">
+        <h1 id="formTitle" class="text-2xl font-bold mb-4">Input Data Tukin</h1>
+        <form id="tukinForm" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" novalidate>
             <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="tanggal">Tanggal:</label>
-                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="tanggal" type="date" placeholder="Tanggal" required>
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="tanggal">
+                    Tanggal
+                </label>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="tanggal" type="date">
             </div>
             <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="nama_kegiatan">Nama Kegiatan:</label>
-                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="nama_kegiatan" type="text" placeholder="Nama Kegiatan" required>
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="nama_kegiatan">
+                    Nama Kegiatan
+                </label>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="nama_kegiatan" type="text">
             </div>
             <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="petugas">Petugas:</label>
-                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="petugas" type="text" placeholder="Petugas" required>
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="petugas">
+                    Petugas
+                </label>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="petugas" type="text">
             </div>
             <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="sebelum_pekerjaan">Sebelum Pekerjaan:</label>
-                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="sebelum_pekerjaan" type="file" accept="image/*" required>
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="sebelum_pekerjaan">
+                    Foto Sebelum Pekerjaan
+                </label>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="sebelum_pekerjaan" type="file" accept="image/*">
+                <img id="preview_sebelum" src="#" alt="Preview Sebelum" style="display:none; max-width: 200px; margin-top: 10px;">
             </div>
             <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="sementara_pekerjaan">Sementara Pekerjaan:</label>
-                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="sementara_pekerjaan" type="file" accept="image/*" required>
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="sebelum_pekerjaan_time">
+                    Waktu Sebelum Pekerjaan
+                </label>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="sebelum_pekerjaan_time" type="time">
             </div>
             <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="pekerjaan_selesai">Pekerjaan Selesai:</label>
-                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="pekerjaan_selesai" type="file" accept="image/*" required>
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="sementara_pekerjaan">
+                    Foto Sementara Pekerjaan
+                </label>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="sementara_pekerjaan" type="file" accept="image/*">
+                <img id="preview_sementara" src="#" alt="Preview Sementara" style="display:none; max-width: 200px; margin-top: 10px;">
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="pekerjaan_selesai">
+                    Foto Pekerjaan Selesai
+                </label>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="pekerjaan_selesai" type="file" accept="image/*">
+                <img id="preview_selesai" src="#" alt ="Preview Selesai" style="display:none; max-width: 200px; margin-top: 10px;">
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="pekerjaan_selesai_time">
+                    Waktu Pekerjaan Selesai
+                </label>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="pekerjaan_selesai_time" type="time">
             </div>
             <div class="flex items-center justify-between">
                 <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
-                    Submit
+                    Simpan
                 </button>
-                <a href="index.html" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                    Lihat Data
+                <a href="index.html" class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800">
+                    Kembali
                 </a>
             </div>
         </form>
     </div>
 
     <script>
-        document.getElementById('taskForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            // Get form values
-            const formData = {
-                id: Date.now(), // Unique ID for each entry
-                tanggal: document.getElementById('tanggal').value,
-                nama_kegiatan: document.getElementById('nama_kegiatan').value,
-                petugas: document.getElementById('petugas').value,
-                sebelum_pekerjaan: await convertToBase64(document.getElementById('sebelum_pekerjaan').files[0]),
-                sementara_pekerjaan: await convertToBase64(document.getElementById('sementara_pekerjaan').files[0]),
-                pekerjaan_selesai: await convertToBase64(document.getElementById('pekerjaan_selesai').files[0])
-            };
+        let editMode = false;
+        let editId = null;
+        let initialData = {};
 
-            // Get existing data from localStorage or initialize empty array
-            const existingData = JSON.parse(localStorage.getItem('taskData')) || [];
-            
-            // Add new data
-            existingData.push(formData);
-            
-            // Save to localStorage
-            localStorage.setItem('taskData', JSON.stringify(existingData));
-            
-            alert('Data berhasil disimpan!');
-            this.reset();
-        });
-
-        // Function to convert file to base64
-        function convertToBase64(file) {
+        function readFileAsBase64(file) {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
                 reader.onload = () => resolve(reader.result);
@@ -79,6 +85,100 @@
                 reader.readAsDataURL(file);
             });
         }
+
+        function previewImage(input, previewId) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById(previewId).src = e.target.result;
+                    document.getElementById(previewId).style.display = 'block';
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        document.getElementById('sebelum_pekerjaan').addEventListener('change', function() {
+            previewImage(this, 'preview_sebelum');
+        });
+
+        document.getElementById('sementara_pekerjaan').addEventListener('change', function() {
+            previewImage(this, 'preview_sementara');
+        });
+
+        document.getElementById('pekerjaan_selesai').addEventListener('change', function() {
+            previewImage(this, 'preview_selesai');
+        });
+
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('mode') === 'edit') {
+                editMode = true;
+                editId = urlParams.get('id');
+                const existingData = JSON.parse(localStorage.getItem('taskData')) || [];
+                const editData = existingData.find(item => item.id == editId);
+
+                if (editData) {
+                    initialData = { ...editData }; // Simpan nilai awal
+                    document.getElementById('tanggal').value = editData.tanggal || '';
+                    document.getElementById('nama_kegiatan').value = editData.nama_kegiatan || '';
+                    document.getElementById('petugas').value = editData.petugas || '';
+                    if (editData.sebelum_pekerjaan) {
+                        document.getElementById('preview_sebelum').src = editData.sebelum_pekerjaan;
+                        document.getElementById('preview_sebelum').style.display = 'block';
+                    }
+                    document.getElementById('sebelum_pekerjaan_time').value = editData.sebelum_pekerjaan_time || '';
+                    if (editData.sementara_pekerjaan) {
+                        document.getElementById('preview_sementara').src = editData.sementara_pekerjaan; 
+                        document.getElementById('preview_sementara').style.display = 'block';
+                    }
+                    if (editData.pekerjaan_selesai) {
+                        document.getElementById('preview_selesai').src = editData.pekerjaan_selesai;
+                        document.getElementById('preview_selesai').style.display = 'block';
+                    }
+                    document.getElementById('pekerjaan_selesai_time').value = editData.pekerjaan_selesai_time || '';
+                }
+            }
+        };
+
+        document.getElementById('tukinForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const tanggal = document.getElementById('tanggal').value;
+            const nama_kegiatan = document.getElementById('nama_kegiatan').value;
+            const petugas = document.getElementById('petugas').value;
+            const sebelum_pekerjaan = document.getElementById('sebelum_pekerjaan').files [0];
+            const sementara_pekerjaan = document.getElementById('sementara_pekerjaan').files[0];
+            const pekerjaan_selesai = document.getElementById('pekerjaan_selesai').files[0];
+            const sebelum_pekerjaan_time = document.getElementById('sebelum_pekerjaan_time').value;
+            const pekerjaan_selesai_time = document.getElementById('pekerjaan_selesai_time').value;
+
+            // Mengonversi file gambar menjadi base64 jika ada perubahan
+            const beforeWorkImage = sebelum_pekerjaan ? await readFileAsBase64(sebelum_pekerjaan) : initialData.sebelum_pekerjaan;
+            const duringWorkImage = sementara_pekerjaan ? await readFileAsBase64(sementara_pekerjaan) : initialData.sementara_pekerjaan;
+            const afterWorkImage = pekerjaan_selesai ? await readFileAsBase64(pekerjaan_selesai) : initialData.pekerjaan_selesai;
+
+            const existingData = JSON.parse(localStorage.getItem('taskData')) || [];
+            const newData = {
+                id: editMode ? editId : Date.now(),
+                tanggal,
+                nama_kegiatan,
+                petugas,
+                sebelum_pekerjaan: beforeWorkImage,
+                sementara_pekerjaan: duringWorkImage,
+                pekerjaan_selesai: afterWorkImage,
+                sebelum_pekerjaan_time,
+                pekerjaan_selesai_time
+            };
+
+            if (editMode) {
+                const index = existingData.findIndex(item => item.id == editId);
+                existingData[index] = newData;
+            } else {
+                existingData.push(newData);
+            }
+
+            localStorage.setItem('taskData', JSON.stringify(existingData));
+            window.location.href = 'index.html';
+        });
     </script>
 </body>
 </html>
