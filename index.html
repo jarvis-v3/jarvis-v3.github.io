@@ -1,5 +1,8 @@
-<html>
+<!DOCTYPE html>
+<html lang="id">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lampiran Dokumentasi Kinerja</title>
     <link href="css/tailwind.min.css" rel="stylesheet">
     <style>
@@ -7,7 +10,7 @@
             vertical-align: middle;
             text-align: center;
             padding: 0.5rem;
-            width: 33%;
+            width: 25%; /* Mengurangi lebar kolom foto untuk memberi ruang lebih */
         }
         
         .photo-cell img {
@@ -15,37 +18,46 @@
             height: auto;
             object-fit: contain;
             display: inline-block;
+            max-height: 200px;
         }
-
+    
         .number-cell {
-            width: auto;
-            white-space: nowrap;
-            padding: 8px 12px;
+            white-space: nowrap; /* Mencegah nomor terputus */
+            padding: 4px; /* Mengurangi padding untuk menghemat ruang */
+            font-size: 10px; /* Mengurangi ukuran font */
+            text-align: center; /* Menyelaraskan nomor ke tengah */
         }
-
+    
         .table-container {
             overflow-x: auto;
             margin: 0 auto;
             width: 100%;
             max-width: calc(100% - 2rem);
         }
-
+    
         table {
-            table-layout: auto;
+            table-layout: auto; /* Mengizinkan lebar kolom disesuaikan dengan konten */
             width: 100%;
             border-collapse: collapse;
         }
-
+    
         th, td {
             border: 1px solid black;
-            padding: 8px;
+            padding: 4px; /* Mengurangi padding untuk menghemat ruang */
+            font-size: 10px; /* Mengurangi ukuran font untuk semua sel */
         }
-
+    
         .activity-cell {
             text-align: left;
-            padding: 8px;
+            padding: 4px; /* Mengurangi padding untuk menghemat ruang */
         }
-
+    
+        .action-button {
+            margin: 2px;
+            display: block;
+            width: 100%;
+        }
+    
         @media print {
             .no-print {
                 display: none !important;
@@ -59,90 +71,143 @@
             .photo-cell img {
                 max-height: 4cm;
             }
+    
+            @page {
+                size: auto; /* Menghapus ukuran kertas yang ditetapkan */
+                margin: 0; /* Menghapus margin */
+            }
+    
+            /* Pastikan kolom nomor menyesuaikan lebar otomatis */
+            .number-cell {
+                width: auto; /* Biarkan lebar otomatis */
+            }
         }
     </style>
 </head>
-<body class="bg-white p-8">
-    <div class="max-w-4xl mx-auto border border-black">
-        <div class="text-center p-4">
-            <h1 class="font-bold text-lg">LAMPIRAN</h1>
-            <h2 class="font-bold text-lg">DOKUMENTASI KINERJA SUB BAGIAN MEKANIKAL POMPA & KELISTRIKAN</h2>
-            <h3 class="font-bold text-lg" id="periodText"></h3>
-        </div>
-        <div class="p-4">
-            <p>Berdasarkan dokumentasi kegiatan dilapangan, berikut lampiran foto kegiatan khusus personal Mekanikal Pompa dan Kelistrikan</p>
-        </div>
-        <div class="mb-4 p-4 no-print">
-            <a href="inputtukin.html" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                Tambah Data
-            </a>
-        </div>
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th>NO</th>
-                        <th>SEBELUM PEKERJAAN</th>
-                        <th>SEMENTARA PEKERJAAN</th>
-                        <th>PEKERJAAN SELESAI</th>
-                    </tr>
-                </thead>
-                <tbody id="tableBody">
-                    <!-- Data will be inserted here -->
-                </tbody>
-            </table>
+<body class="bg-gray-100">
+    <div class="max-w-6xl mx-auto p-4">
+        <div class="bg-white rounded px-8 pt-6 pb-8 mb-4">
+            <div class="text-center mb-6">
+                <h1 class="font-bold text-xl">LAMPIRAN</h1>
+                <h2 class="font-bold text-xl">DOKUMENTASI KINERJA SUB BAGIAN MEKANIKAL ELECTRICAL POMPA & GENSET</h2>
+                <h3 class="font-bold text-xl" id="periodText"></h3>
+            </div>
+
+            <div class="mb-6">
+                <p class="text-gray-700">Berdasarkan dokumentasi kegiatan dilapangan, berikut lampiran foto kegiatan Tim Mekanikal Electrical Pompa dan Genset</p>
+            </div>
+
+            <div class="mb-6 no-print">
+                <a href="inputtukin.html" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline inline-block mr-2">
+                    Tambah Data
+                </a>
+                <button onclick="window.print()" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline inline-block">
+                    Cetak
+                </button>
+            </div>
+
+            <div class="table-container">
+                <table class="min-w-full" id="mainTable">
+                    <thead>
+                        <tr class="bg-gray-100">
+                            <th class="border px-4 py-2">NO</th>
+                            <th class="border px-4 py-2">KETER ANGAN</th>
+                            <th class="border px-4 py-2">SEBELUM PEKERJAAN</th>
+                            <th class="border px-4 py-2">SEMENTARA PEKERJAAN</th>
+                            <th class="border px-4 py-2">PEKERJAAN SELESAI</th>
+                            <th class="border px-4 py-2 no-print">AKSI</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <!-- Data akan diisi di sini -->
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
     <script>
-        function loadData() {
+        // Fungsi untuk menampilkan data dari localStorage
+        function displayData() {
             const existingData = JSON.parse(localStorage.getItem('taskData')) || [];
             const tableBody = document.getElementById('tableBody');
-            
             tableBody.innerHTML = '';
-            
-            existingData.forEach((task, index) => {
+
+            existingData.forEach((item, index) => {
+                const dateParts = item.tanggal.split('-');
+                const date = new Date(`${dateParts[0]}-${dateParts[1]}-${dateParts[2]}`);
+                const options = { weekday: 'long', year: 'numeric', month: '2-digit', day: '2-digit' };
+                const formattedDate = date.toLocaleDateString('id-ID', options).replace(/,/, '');
+                
+                const startTimeParts = item.sebelum_pekerjaan_time.split(':');
+                const endTimeParts = item.pekerjaan_selesai_time.split(':');
+                const startHour = parseInt(startTimeParts[0]);
+                const startMinute = parseInt(startTimeParts[1]);
+                const endHour = parseInt(endTimeParts[0]);
+                const endMinute = parseInt(endTimeParts[1]);
+                
+                const durationHours = endHour - startHour + (endMinute - startMinute) / 60;
+                const formattedTime = `Jam ${startHour} sampai Jam ${endHour} (${durationHours.toFixed(0)} jam)`;
+
                 const photoRow = document.createElement('tr');
                 photoRow.innerHTML = `
-                    <td class="number-cell" rowspan="2">${index + 1}</td>
-                    <td class="photo-cell"><img src="${task.sebelum_pekerjaan}" alt="Sebelum Pekerjaan"></td>
-                    <td class="photo-cell"><img src="${task.sementara_pekerjaan}" alt="Sementara Pekerjaan"></td>
-                    <td class="photo-cell"><img src="${task.pekerjaan_selesai}" alt="Pekerjaan Selesai"></td>
-                `;
-                tableBody.appendChild(photoRow);
-
-                const activityRow = document.createElement('tr');
-                activityRow.innerHTML = `
-                    <td colspan="3" class="activity-cell">
-                        <strong>Tanggal:</strong> ${formatDate(task.tanggal)}<br>
-                        <strong>Nama Kegiatan:</strong> ${task.nama_kegiatan}<br>
-                        <strong>Petugas:</strong> ${task.petugas}
+                    <td class="border px-4 py-2 number-cell">${index + 1}</td>
+                    <td class="border px-4 py-2 activity-cell">
+                        <strong>Tanggal:</strong> ${formattedDate}<br>
+                        <strong>Nama Kegiatan:</strong> ${item.nama_kegiatan}<br>
+                        <strong>Petugas:</strong> ${item.petugas}<br>
+                        <strong>Waktu:</strong> ${formattedTime}
+                    </td>
+                    <td class="border px-4 py-2 photo-cell"><img src="${item.sebelum_pekerjaan}" alt="Sebelum Pekerjaan"></td>
+                    <td class="border px-4 py-2 photo-cell"><img src="${item.sementara_pekerjaan}" alt="Sementara Pekerjaan"></td>
+                    <td class="border px-4 py-2 photo-cell"><img src="${item.pekerjaan_selesai}" alt="Pekerjaan Selesai"></td>
+                    <td class="border px-4 py-2 no-print">
+                        <a href="inputtukin.html?mode=edit&id=${item.id}" class="action-button bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-2 rounded">Edit</a>
+                        <button onclick="deleteData('${item.id}')" class="action-button bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded">Hapus</button>
                     </td>
                 `;
-                tableBody.appendChild(activityRow);
+                tableBody.appendChild(photoRow);
             });
         }
 
-        function formatDate(dateString) {
-            const options = { 
-                weekday: 'long', 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric' 
-            };
-            return new Date(dateString).toLocaleDateString('id-ID', options);
+        // Fungsi untuk menghapus data
+        function deleteData(id) {
+            if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
+                const existingData = JSON.parse(localStorage.getItem('taskData')) || [];
+                const updatedData = existingData.filter(item => item.id != id);
+                localStorage.setItem('taskData', JSON.stringify(updatedData));
+                displayData();
+                updatePeriodText();
+            }
         }
 
-        document.addEventListener('DOMContentLoaded', loadData);
+        // Fungsi untuk memperbarui teks periode
+        function updatePeriodText() {
+            const existingData = JSON.parse(localStorage.getItem('taskData')) || [];
+            const periodText = document.getElementById('periodText');
+            
+            if (existingData.length > 0) {
+                const dates = existingData.map(item => {
+                    const dateParts = item.tanggal.split('/');
+                    return new Date(`${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`);
+                });
 
-        function setPeriod() {
-            const date = new Date();
-            const month = date.toLocaleString('id-ID', { month: 'long' });
-            const year = date.getFullYear();
-            document.getElementById('periodText').textContent = `PERIODE: ${month.toUpperCase()} ${year}`;
+                const minDate = new Date(Math.min.apply(null, dates));
+                const monthNames = ["JANUARI", "FEBRUARI", "MARET", "APRIL", "MEI", "JUNI", "JULI", "AGUSTUS", "SEPTEMBER", "OKTOBER", "NOVEMBER", "DESEMBER"];
+                const year = minDate.getFullYear();
+                const month = monthNames[minDate.getMonth()];
+
+                periodText.textContent = `${month} ${year}`;
+            } else {
+                periodText.textContent = 'Tidak ada data';
+            }
         }
 
-        setPeriod();
+        // Memanggil fungsi untuk menampilkan data dan memperbarui teks periode saat halaman dimuat
+        window.onload = function() {
+            displayData();
+            updatePeriodText();
+        };
     </script>
 </body>
 </html>
