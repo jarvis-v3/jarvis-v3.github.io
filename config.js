@@ -2,9 +2,9 @@
 const GITHUB_CONFIG = {
     owner: 'username-github-anda',
     repo: 'nama-repository-anda',
-    path: 'data.csv',  // Ubah ini ke 'data.csv'
+    path: 'data.csv',
     branch: 'main',
-    token: 'github_pat_anda' // Personal Access Token GitHub
+    token: 'github_pat_anda'
 };
 
 export { GITHUB_CONFIG };
