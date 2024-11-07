@@ -1,10 +1,10 @@
-// config.example.js
+// config.js
 const GITHUB_CONFIG = {
-    owner: 'your-github-username',
-    repo: 'your-repository-name',
-    path: 'data/tukin.csv',
+    owner: 'username-github-anda',
+    repo: 'nama-repository-anda',
+    path: 'data.csv',  // Ubah ini ke 'data.csv'
     branch: 'main',
-    token: 'your-github-token'
+    token: 'github_pat_anda' // Personal Access Token GitHub
 };
 
 export { GITHUB_CONFIG };
