@@ -1,0 +1,71 @@
+# Konfigurasi
+js/config.js
+config.js
+
+# Dependencies
+node_modules/
+package-lock.json
+yarn.lock
+
+# File sistem operasi
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE dan editor
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# File log
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# File environment
+.env
+.env.local
+.env.*.local
+
+# File build dan distribusi
+dist/
+build/
+out/
+
+# File cache
+.cache/
+.temp/
+
+# File backup
+*.bak
+*.backup
+*.[Bb]ak
+
+# File sementara
+tmp/
+temp/
+
+# File pribadi dan kredensial
+*.pem
+*.key
+*.cert
+*.crt
+
+# File data yang tidak perlu di-track
+data.csv
+*.csv
+*.xlsx
+*.xls
+
+# File media yang tidak perlu di-track
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.ico
+*.mp4
+*.mov
+*.avi
