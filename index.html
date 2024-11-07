@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lampiran Dokumentasi Kinerja</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <link href="css/tailwind.min.css" rel="stylesheet">
     <style>
         /* Styles untuk tampilan umum */
@@ -162,14 +161,15 @@
                 <p class="text-gray-700">Berdasarkan dokumentasi kegiatan dilapangan, berikut lampiran foto kegiatan Tim Mekanikal Electrical Pompa dan Genset</p>
             </div>
 
-            <div class="mb-6 no-print">
-                <a href="inputtukin.html" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline inline-block mr-2">
+            <!-- Kode untuk tombol-tombol -->
+            <div class="action-buttons no-print">
+                <a href="inputtukin.html" class="action-button bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                     Tambah Data
                 </a>
-                <button onclick="window.print()" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline inline-block mr-2">
+                <button onclick="printDocument()" class="action-button bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                     Cetak
                 </button>
-                <button onclick="sharePDF()" class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline inline-block">
+                <button onclick="sharePDF()" class="action-button bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                     Bagikan PDF
                 </button>
             </div>
@@ -194,89 +194,77 @@
         </div>
     </div>
 
-    <script>
-        // Fungsi untuk menampilkan data dari localStorage
-        function displayData() {
-            const existingData = JSON.parse(localStorage.getItem('taskData')) || [];
-            const tableBody = document.getElementById('tableBody');
-            tableBody.innerHTML = '';
+<script>
+    // Fungsi untuk mencetak dokumen
+    function printDocument() {
+        window.print();
+    }
 
-            existingData.forEach((item, index) => {
-                const dateParts = item.tanggal.split('-');
-                const date = new Date(`${dateParts[0]}-${dateParts[1]}-${dateParts[2]}`);
-                const options = { weekday: 'long', year: 'numeric', month: '2-digit', day: '2-digit' };
-                const formattedDate = date.toLocaleDateString('id-ID', options).replace(/,/, '');
-                
-                const startTimeParts = item.sebelum_pekerjaan_time.split(':');
-                const endTimeParts = item.pekerjaan_selesai_time.split(':');
-                const startHour = parseInt(startTimeParts[0]);
-                const startMinute = parseInt(startTimeParts[1]);
-                const endHour = parseInt(endTimeParts[0]);
-                const endMinute = parseInt(endTimeParts[1]);
-                
-                const durationHours = endHour - startHour + (endMinute - startMinute) / 60;
-                const formattedTime = `Jam ${startHour} sampai Jam ${endHour} (${durationHours.toFixed(0)} jam)`;
+    // Fungsi untuk membagikan PDF
+    async function sharePDF() {
+        try {
+            // Cek apakah Web Share API tersedia
+            if (navigator.share) {
+                // Konversi halaman ke PDF menggunakan html2pdf
+                const element = document.body;
+                const opt = {
+                    margin: 1,
+                    filename: 'dokumentasi_kinerja.pdf',
+                    image: { type: 'jpeg', quality: 0.98 },
+                    html2canvas: { scale: 2 },
+                    jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+                };
 
-                const photoRow = document.createElement('tr');
-                photoRow.innerHTML = `
-                    <td class="border px-4 py-2 number-cell">${index + 1}</td>
-                    <td class="border px-4 py-2 activity-cell">
-                        <strong>Tanggal:</strong> ${formattedDate}<br>
-                        <strong>Nama Kegiatan:</strong> ${item.nama_kegiatan}<br>
-                        <strong>Petugas:</strong> ${item.petugas}<br>
-                        <strong>Waktu:</strong> ${formattedTime}
-                    </td>
-                    <td class="border px-4 py-2 photo-cell"><img src="${item.sebelum_pekerjaan}" alt="Sebelum Pekerjaan"></td>
-                    <td class="border px-4 py-2 photo-cell"><img src="${item.sementara_pekerjaan}" alt="Sementara Pekerjaan"></td>
-                    <td class="border px-4 py-2 photo-cell"><img src="${item.pekerjaan_selesai}" alt="Pekerjaan Selesai"></td>
-                    <td class="border px-4 py-2 no-print">
-                        <a href="inputtukin.html?mode=edit&id=${item.id}" class="action-button bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-2 rounded">Edit</a>
-                        <button onclick="deleteData('${item.id}')" class="action-button bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded">Hapus</button>
-                    </td>
-                `;
-                tableBody.appendChild(photoRow);
-            });
-        }
+                // Tambahkan loading indicator
+                const loadingDiv = document.createElement('div');
+                loadingDiv.innerHTML = 'Menyiapkan PDF...';
+                loadingDiv.style.position = 'fixed';
+                loadingDiv.style.top = '50%';
+                loadingDiv.style.left = '50%';
+                loadingDiv.style.transform = 'translate(-50%, -50%)';
+                loadingDiv.style.padding = '1rem';
+                loadingDiv.style.backgroundColor = 'rgba(0,0,0,0.8)';
+                loadingDiv.style.color = 'white';
+                loadingDiv.style.borderRadius = '0.5rem';
+                document.body.appendChild(loadingDiv);
 
-        // Fungsi untuk menghapus data
-        function deleteData(id) {
-            if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
-                const existingData = JSON.parse(localStorage.getItem('taskData')) || [];
-                const updatedData = existingData.filter(item => item.id != id);
-                localStorage.setItem('taskData', JSON.stringify(updatedData));
-                displayData();
-                updatePeriodText();
-            }
-        }
+                try {
+                    const pdf = await html2pdf().set(opt).from(element).output('blob');
+                    const file = new File([pdf], 'dokumentasi_kinerja.pdf', {
+                        type: 'application/pdf'
+                    });
 
-        // Fungsi untuk memperbarui teks periode
-        function updatePeriodText() {
-            const existingData = JSON.parse(localStorage.getItem('taskData')) || [];
-            const periodText = document.getElementById('periodText');
-            
-            if (existingData.length > 0) {
-                const dates = existingData.map(item => {
-                    const dateParts = item.tanggal.split('/');
-                    return new Date(`${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`);
-                });
-
-                const minDate = new Date(Math.min.apply(null, dates));
-                const monthNames = ["JANUARI", "FEBRUARI", "MARET", "APRIL", "MEI", "JUNI", "JULI", "AGUSTUS", "SEPTEMBER", "OKTOBER", "NOVEMBER", "DESEMBER"];
-                const year = minDate.getFullYear();
-                const month = monthNames[minDate.getMonth()];
-
-                periodText.textContent = `${month} ${year}`;
+                    await navigator.share({
+                        files: [file],
+                        title: 'Dokumentasi Kinerja',
+                        text: 'Laporan Dokumentasi Kinerja'
+                    });
+                } catch (error) {
+                    console.error('Error creating or sharing PDF:', error);
+                    alert('Gagal membuat atau membagikan PDF. Silakan coba lagi.');
+                } finally {
+                    // Hapus loading indicator
+                    document.body.removeChild(loadingDiv);
+                }
             } else {
-                periodText.textContent = 'Tidak ada data';
+                // Jika Web Share API tidak tersedia, buka di tab baru
+                alert('Fitur berbagi tidak tersedia di browser ini. Silakan gunakan tombol Cetak untuk menyimpan PDF.');
             }
+        } catch (error) {
+            console.error('Error sharing:', error);
+            alert('Gagal membagikan file. Silakan coba lagi.');
         }
+    }
 
-        // Memanggil fungsi untuk menampilkan data dan memperbarui teks periode saat halaman dimuat
-        window.onload = function() {
-            displayData();
-            updatePeriodText();
-        };
-    </script>
+    // Pastikan tombol-tombol terlihat saat halaman dimuat
+    document.addEventListener('DOMContentLoaded', function() {
+        const buttons = document.querySelectorAll('.action-button');
+        buttons.forEach(button => {
+            button.style.display = 'inline-flex';
+        });
+    });
+</script>
     <script src="sharepdf.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </body>
 </html>
