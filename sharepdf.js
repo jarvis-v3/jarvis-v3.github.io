@@ -1,16 +1,34 @@
 function sharePDF() {
+    // Sembunyikan elemen yang tidak perlu di PDF
+    const elementsToHide = document.querySelectorAll('.no-print');
+    elementsToHide.forEach(el => el.style.display = 'none');
+
     // Menggunakan library html2pdf.js untuk mengonversi HTML ke PDF
-    const element = document.body;
+    const element = document.querySelector('.max-w-6xl'); // Ambil hanya konten utama
     const opt = {
-        margin:       10,
-        filename:     'dokumentasi_kinerja.pdf',
-        image:        { type: 'jpeg', quality: 0.98 },
-        html2canvas:  { scale: 2 },
-        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        margin: 0,
+        filename: 'dokumentasi_kinerja.pdf',
+        image: { type: 'jpeg', quality: 1 },
+        html2canvas: { 
+            scale: 2,
+            useCORS: true,
+            logging: true,
+            letterRendering: true
+        },
+        jsPDF: { 
+            unit: 'mm', 
+            format: 'a4', 
+            orientation: 'portrait',
+            compress: true
+        },
+        pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
     };
 
     // Buat PDF
     html2pdf().set(opt).from(element).save().then(function() {
+        // Tampilkan kembali elemen yang disembunyikan
+        elementsToHide.forEach(el => el.style.display = '');
+        
         // Setelah PDF dibuat, tampilkan opsi berbagi jika didukung
         if (navigator.share) {
             navigator.share({
