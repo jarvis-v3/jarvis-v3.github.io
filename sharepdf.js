@@ -44,7 +44,7 @@ function sharePDF() {
             }).then(() => console.log('Berhasil berbagi'))
             .catch((error) => console.log('Gagal berbagi', error));
         } else {
-            alert('Maaf, fitur berbagi tidak didukung di perangkat ini.');
+            alert('PDF telah dibuat. Silakan cek di folder unduhan Anda.');
         }
     });
 }
