@@ -6,12 +6,11 @@
     <title>Lampiran Dokumentasi Kinerja</title>
     <link href="css/tailwind.min.css" rel="stylesheet">
     <style>
-        /* Styles untuk tampilan umum */
         .photo-cell {
             vertical-align: middle;
             text-align: center;
             padding: 0.5rem;
-            width: 25%;
+            width: 25%; /* Mengurangi lebar kolom foto untuk memberi ruang lebih */
         }
         
         .photo-cell img {
@@ -23,10 +22,10 @@
         }
     
         .number-cell {
-            white-space: nowrap;
-            padding: 4px;
-            font-size: 10px;
-            text-align: center;
+            white-space: nowrap; /* Mencegah nomor terputus */
+            padding: 4px; /* Mengurangi padding untuk menghemat ruang */
+            font-size: 10px; /* Mengurangi ukuran font */
+            text-align: center; /* Menyelaraskan nomor ke tengah */
         }
     
         .table-container {
@@ -37,21 +36,20 @@
         }
     
         table {
-            table-layout: auto;
+            table-layout: auto; /* Mengizinkan lebar kolom disesuaikan dengan konten */
             width: 100%;
             border-collapse: collapse;
-            page-break-inside: auto;
         }
     
         th, td {
             border: 1px solid black;
-            padding: 4px;
-            font-size: 10px;
+            padding: 4px; /* Mengurangi padding untuk menghemat ruang */
+            font-size: 10px; /* Mengurangi ukuran font untuk semua sel */
         }
     
         .activity-cell {
             text-align: left;
-            padding: 4px;
+            padding: 4px; /* Mengurangi padding untuk menghemat ruang */
         }
     
         .action-button {
@@ -60,8 +58,7 @@
             width: 100%;
         }
     
-        /* Styles untuk print dan PDF */
-        @media print, screen {
+        @media print {
             .no-print {
                 display: none !important;
             }
@@ -69,81 +66,20 @@
             .table-container {
                 max-width: 100%;
                 margin: 0;
-                overflow-x: visible;
             }
             
-            .photo-cell {
-                width: 25%;
-                vertical-align: middle;
-                text-align: center;
-            }
-    
             .photo-cell img {
                 max-height: 4cm;
-                width: auto;
-                object-fit: contain;
-                display: inline-block;
             }
     
-            .number-cell {
-                width: auto;
-                white-space: nowrap;
-                font-size: 10px;
-                text-align: center;
-            }
-    
-            tr {
-                page-break-inside: avoid;
-                page-break-after: auto;
-            }
-    
-            th, td {
-                padding: 4px;
-                border: 1px solid black;
-                font-size: 10px;
-            }
-    
-            .activity-cell {
-                text-align: left;
-                padding: 4px;
-            }
-    
-            /* Pengaturan halaman untuk print */
             @page {
-                size: auto;
-                margin: 0;
+                size: auto; /* Menghapus ukuran kertas yang ditetapkan */
+                margin: 0; /* Menghapus margin */
             }
     
-            /* Pengaturan konten utama */
-            .max-w-6xl {
-                padding: 10mm;
-                margin: 0 auto;
-                max-width: 100%;
-            }
-    
-            /* Pengaturan font dan spacing */
-            body {
-                font-size: 10px;
-                line-height: 1.4;
-            }
-        }
-    
-        /* Khusus untuk PDF via html2pdf.js */
-        .pdf-mode {
-            .table-container {
-                overflow-x: visible !important;
-            }
-    
-            .photo-cell img {
-                max-height: 4cm !important;
-            }
-    
-            table {
-                page-break-inside: auto !important;
-            }
-    
-            tr {
-                page-break-inside: avoid !important;
+            /* Pastikan kolom nomor menyesuaikan lebar otomatis */
+            .number-cell {
+                width: auto; /* Biarkan lebar otomatis */
             }
         }
     </style>
@@ -161,16 +97,12 @@
                 <p class="text-gray-700">Berdasarkan dokumentasi kegiatan dilapangan, berikut lampiran foto kegiatan Tim Mekanikal Electrical Pompa dan Genset</p>
             </div>
 
-            <!-- Kode untuk tombol-tombol -->
-            <div class="action-buttons no-print">
-                <a href="inputtukin.html" class="action-button bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+            <div class="mb-6 no-print">
+                <a href="inputtukin.html" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline inline-block mr-2">
                     Tambah Data
                 </a>
-                <button onclick="printDocument()" class="action-button bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                <button onclick="window.print()" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline inline-block">
                     Cetak
-                </button>
-                <button onclick="sharePDF()" class="action-button bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                    Bagikan PDF
                 </button>
             </div>
 
@@ -194,77 +126,88 @@
         </div>
     </div>
 
-<script>
-    // Fungsi untuk mencetak dokumen
-    function printDocument() {
-        window.print();
-    }
+    <script>
+        // Fungsi untuk menampilkan data dari localStorage
+        function displayData() {
+            const existingData = JSON.parse(localStorage.getItem('taskData')) || [];
+            const tableBody = document.getElementById('tableBody');
+            tableBody.innerHTML = '';
 
-    // Fungsi untuk membagikan PDF
-    async function sharePDF() {
-        try {
-            // Cek apakah Web Share API tersedia
-            if (navigator.share) {
-                // Konversi halaman ke PDF menggunakan html2pdf
-                const element = document.body;
-                const opt = {
-                    margin: 1,
-                    filename: 'dokumentasi_kinerja.pdf',
-                    image: { type: 'jpeg', quality: 0.98 },
-                    html2canvas: { scale: 2 },
-                    jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
-                };
+            existingData.forEach((item, index) => {
+                const dateParts = item.tanggal.split('-');
+                const date = new Date(`${dateParts[0]}-${dateParts[1]}-${dateParts[2]}`);
+                const options = { weekday: 'long', year: 'numeric', month: '2-digit', day: '2-digit' };
+                const formattedDate = date.toLocaleDateString('id-ID', options).replace(/,/, '');
+                
+                const startTimeParts = item.sebelum_pekerjaan_time.split(':');
+                const endTimeParts = item.pekerjaan_selesai_time.split(':');
+                const startHour = parseInt(startTimeParts[0]);
+                const startMinute = parseInt(startTimeParts[1]);
+                const endHour = parseInt(endTimeParts[0]);
+                const endMinute = parseInt(endTimeParts[1]);
+                
+                const durationHours = endHour - startHour + (endMinute - startMinute) / 60;
+                const formattedTime = `Jam ${startHour} sampai Jam ${endHour} (${durationHours.toFixed(0)} jam)`;
 
-                // Tambahkan loading indicator
-                const loadingDiv = document.createElement('div');
-                loadingDiv.innerHTML = 'Menyiapkan PDF...';
-                loadingDiv.style.position = 'fixed';
-                loadingDiv.style.top = '50%';
-                loadingDiv.style.left = '50%';
-                loadingDiv.style.transform = 'translate(-50%, -50%)';
-                loadingDiv.style.padding = '1rem';
-                loadingDiv.style.backgroundColor = 'rgba(0,0,0,0.8)';
-                loadingDiv.style.color = 'white';
-                loadingDiv.style.borderRadius = '0.5rem';
-                document.body.appendChild(loadingDiv);
-
-                try {
-                    const pdf = await html2pdf().set(opt).from(element).output('blob');
-                    const file = new File([pdf], 'dokumentasi_kinerja.pdf', {
-                        type: 'application/pdf'
-                    });
-
-                    await navigator.share({
-                        files: [file],
-                        title: 'Dokumentasi Kinerja',
-                        text: 'Laporan Dokumentasi Kinerja'
-                    });
-                } catch (error) {
-                    console.error('Error creating or sharing PDF:', error);
-                    alert('Gagal membuat atau membagikan PDF. Silakan coba lagi.');
-                } finally {
-                    // Hapus loading indicator
-                    document.body.removeChild(loadingDiv);
-                }
-            } else {
-                // Jika Web Share API tidak tersedia, buka di tab baru
-                alert('Fitur berbagi tidak tersedia di browser ini. Silakan gunakan tombol Cetak untuk menyimpan PDF.');
-            }
-        } catch (error) {
-            console.error('Error sharing:', error);
-            alert('Gagal membagikan file. Silakan coba lagi.');
+                const photoRow = document.createElement('tr');
+                photoRow.innerHTML = `
+                    <td class="border px-4 py-2 number-cell">${index + 1}</td>
+                    <td class="border px-4 py-2 activity-cell">
+                        <strong>Tanggal:</strong> ${formattedDate}<br>
+                        <strong>Nama Kegiatan:</strong> ${item.nama_kegiatan}<br>
+                        <strong>Petugas:</strong> ${item.petugas}<br>
+                        <strong>Waktu:</strong> ${formattedTime}
+                    </td>
+                    <td class="border px-4 py-2 photo-cell"><img src="${item.sebelum_pekerjaan}" alt="Sebelum Pekerjaan"></td>
+                    <td class="border px-4 py-2 photo-cell"><img src="${item.sementara_pekerjaan}" alt="Sementara Pekerjaan"></td>
+                    <td class="border px-4 py-2 photo-cell"><img src="${item.pekerjaan_selesai}" alt="Pekerjaan Selesai"></td>
+                    <td class="border px-4 py-2 no-print">
+                        <a href="inputtukin.html?mode=edit&id=${item.id}" class="action-button bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-2 rounded">Edit</a>
+                        <button onclick="deleteData('${item.id}')" class="action-button bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded">Hapus</button>
+                    </td>
+                `;
+                tableBody.appendChild(photoRow);
+            });
         }
-    }
 
-    // Pastikan tombol-tombol terlihat saat halaman dimuat
-    document.addEventListener('DOMContentLoaded', function() {
-        const buttons = document.querySelectorAll('.action-button');
-        buttons.forEach(button => {
-            button.style.display = 'inline-flex';
-        });
-    });
-</script>
-    <script src="sharepdf.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+        // Fungsi untuk menghapus data
+        function deleteData(id) {
+            if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
+                const existingData = JSON.parse(localStorage.getItem('taskData')) || [];
+                const updatedData = existingData.filter(item => item.id != id);
+                localStorage.setItem('taskData', JSON.stringify(updatedData));
+                displayData();
+                updatePeriodText();
+            }
+        }
+
+        // Fungsi untuk memperbarui teks periode
+        function updatePeriodText() {
+            const existingData = JSON.parse(localStorage.getItem('taskData')) || [];
+            const periodText = document.getElementById('periodText');
+            
+            if (existingData.length > 0) {
+                const dates = existingData.map(item => {
+                    const dateParts = item.tanggal.split('/');
+                    return new Date(`${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`);
+                });
+
+                const minDate = new Date(Math.min.apply(null, dates));
+                const monthNames = ["JANUARI", "FEBRUARI", "MARET", "APRIL", "MEI", "JUNI", "JULI", "AGUSTUS", "SEPTEMBER", "OKTOBER", "NOVEMBER", "DESEMBER"];
+                const year = minDate.getFullYear();
+                const month = monthNames[minDate.getMonth()];
+
+                periodText.textContent = `${month} ${year}`;
+            } else {
+                periodText.textContent = 'Tidak ada data';
+            }
+        }
+
+        // Memanggil fungsi untuk menampilkan data dan memperbarui teks periode saat halaman dimuat
+        window.onload = function() {
+            displayData();
+            updatePeriodText();
+        };
+    </script>
 </body>
 </html>
