@@ -7,11 +7,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <link href="css/tailwind.min.css" rel="stylesheet">
     <style>
+        /* Styles untuk tampilan umum */
         .photo-cell {
             vertical-align: middle;
             text-align: center;
             padding: 0.5rem;
-            width: 25%; /* Mengurangi lebar kolom foto untuk memberi ruang lebih */
+            width: 25%;
         }
         
         .photo-cell img {
@@ -23,10 +24,10 @@
         }
     
         .number-cell {
-            white-space: nowrap; /* Mencegah nomor terputus */
-            padding: 4px; /* Mengurangi padding untuk menghemat ruang */
-            font-size: 10px; /* Mengurangi ukuran font */
-            text-align: center; /* Menyelaraskan nomor ke tengah */
+            white-space: nowrap;
+            padding: 4px;
+            font-size: 10px;
+            text-align: center;
         }
     
         .table-container {
@@ -37,20 +38,21 @@
         }
     
         table {
-            table-layout: auto; /* Mengizinkan lebar kolom disesuaikan dengan konten */
+            table-layout: auto;
             width: 100%;
             border-collapse: collapse;
+            page-break-inside: auto;
         }
     
         th, td {
             border: 1px solid black;
-            padding: 4px; /* Mengurangi padding untuk menghemat ruang */
-            font-size: 10px; /* Mengurangi ukuran font untuk semua sel */
+            padding: 4px;
+            font-size: 10px;
         }
     
         .activity-cell {
             text-align: left;
-            padding: 4px; /* Mengurangi padding untuk menghemat ruang */
+            padding: 4px;
         }
     
         .action-button {
@@ -59,7 +61,8 @@
             width: 100%;
         }
     
-        @media print {
+        /* Styles untuk print dan PDF */
+        @media print, screen {
             .no-print {
                 display: none !important;
             }
@@ -67,20 +70,81 @@
             .table-container {
                 max-width: 100%;
                 margin: 0;
+                overflow-x: visible;
             }
             
+            .photo-cell {
+                width: 25%;
+                vertical-align: middle;
+                text-align: center;
+            }
+    
             .photo-cell img {
                 max-height: 4cm;
+                width: auto;
+                object-fit: contain;
+                display: inline-block;
             }
     
-            @page {
-                size: auto; /* Menghapus ukuran kertas yang ditetapkan */
-                margin: 0; /* Menghapus margin */
-            }
-    
-            /* Pastikan kolom nomor menyesuaikan lebar otomatis */
             .number-cell {
-                width: auto; /* Biarkan lebar otomatis */
+                width: auto;
+                white-space: nowrap;
+                font-size: 10px;
+                text-align: center;
+            }
+    
+            tr {
+                page-break-inside: avoid;
+                page-break-after: auto;
+            }
+    
+            th, td {
+                padding: 4px;
+                border: 1px solid black;
+                font-size: 10px;
+            }
+    
+            .activity-cell {
+                text-align: left;
+                padding: 4px;
+            }
+    
+            /* Pengaturan halaman untuk print */
+            @page {
+                size: auto;
+                margin: 0;
+            }
+    
+            /* Pengaturan konten utama */
+            .max-w-6xl {
+                padding: 10mm;
+                margin: 0 auto;
+                max-width: 100%;
+            }
+    
+            /* Pengaturan font dan spacing */
+            body {
+                font-size: 10px;
+                line-height: 1.4;
+            }
+        }
+    
+        /* Khusus untuk PDF via html2pdf.js */
+        .pdf-mode {
+            .table-container {
+                overflow-x: visible !important;
+            }
+    
+            .photo-cell img {
+                max-height: 4cm !important;
+            }
+    
+            table {
+                page-break-inside: auto !important;
+            }
+    
+            tr {
+                page-break-inside: avoid !important;
             }
         }
     </style>
