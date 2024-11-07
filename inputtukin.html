@@ -67,6 +67,25 @@
     </div>
 
     <script>
+        // meminta ijin penggunaan kamera
+        function requestCameraPermission() {
+            navigator.mediaDevices.getUserMedia({ video: true })
+            .then(function(stream) {
+                console.log("Izin kamera diberikan");
+                // Segera hentikan stream karena kita tidak benar-benar menggunakannya
+                stream.getTracks().forEach(track => track.stop());
+            })
+            .catch(function(err) {
+                console.log("Izin kamera ditolak: ", err);
+            });
+        }
+        //tambahan script kamear
+                document.addEventListener('DOMContentLoaded', function() {
+            requestCameraPermission();
+        });
+
+
+
         // Cek dukungan localStorage
         if (typeof(Storage) === "undefined") {
             alert("Maaf, browser Anda tidak mendukung localStorage. Silakan gunakan browser yang lebih baru.");
