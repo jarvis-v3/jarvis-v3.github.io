@@ -3,10 +3,13 @@ function sharePDF() {
     const elementsToHide = document.querySelectorAll('.no-print');
     elementsToHide.forEach(el => el.style.display = 'none');
 
+    // Tambahkan class pdf-mode ke body
+    document.body.classList.add('pdf-mode');
+
     // Menggunakan library html2pdf.js untuk mengonversi HTML ke PDF
-    const element = document.querySelector('.max-w-6xl'); // Ambil hanya konten utama
+    const element = document.querySelector('.max-w-6xl');
     const opt = {
-        margin: 0,
+        margin: [10, 10, 10, 10],
         filename: 'dokumentasi_kinerja.pdf',
         image: { type: 'jpeg', quality: 1 },
         html2canvas: { 
@@ -29,6 +32,9 @@ function sharePDF() {
         // Tampilkan kembali elemen yang disembunyikan
         elementsToHide.forEach(el => el.style.display = '');
         
+        // Hapus class pdf-mode
+        document.body.classList.remove('pdf-mode');
+
         // Setelah PDF dibuat, tampilkan opsi berbagi jika didukung
         if (navigator.share) {
             navigator.share({
