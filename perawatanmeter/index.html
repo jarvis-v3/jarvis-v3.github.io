@@ -1,0 +1,175 @@
+<html>
+<head>
+    <title>Form Berita Acara Pemeriksaan & Penggantian Meter Air</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .underline {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body class="p-10">
+    <div class="text-center">
+        <h1 class="font-bold text-xl">BERITA ACARA</h1>
+        <h2 class="font-bold text-lg underline mt-2">PEMERIKSAAN & PENGGANTIAN METER AIR</h2>
+        <p class="mt-4">NO: ___/BA-PMG/PERUMDAM-PGMA/____/20__</p>
+    </div>
+    <form id="uploadForm" class="mt-8">
+        <div class="mb-4">
+            <label class="block">Pada Hari ini</label>
+            <div class="flex space-x-4">
+                <input type="date" class="border p-2 w-full" placeholder="dd/mm/yyyy" pattern="\d{2}/\d{2}/\d{4}" title="Format tanggal harus dd/mm/yyyy" onfocus="(this.type='date')" onblur="(this.type='text')">
+            </div>
+        </div>
+        <p>telah di <span class="underline">lakukan Pemeriksaan & Penggantian</span> meter air atas nama pelanggan sebagai berikut :</p>
+        <div class="mt-4 ml-10">
+            <div class="mb-4">
+                <label>Nama</label>
+                <input type="text" class="border p-2 w-full" required>
+            </div>
+            <div class="mb-4">
+                <label>Alamat</label>
+                <input type="text" placeholder="Jl." class="border p-2 w-full" required>
+            </div>
+            <div class="mb-4">
+                <label>No Sambungan</label>
+                <input type="text" class="border p-2 w-full" required>
+            </div>
+            <div class="mb-4">
+                <label>Keterangan Kerusakan</label>
+                <input type="text" class="border p-2 w-full" required>
+            </div>
+            <div class="flex space-x-10">
+                <div class="mb-4 w-1/2">
+                    <label>Kedudukan Angka Meter</label>
+                    <div class="ml-10">
+                        <label>Lama</label>
+                        <input type="text" class="border p-2 w-full" required>
+                    </div>
+                    <div class="ml-10 mt-2">
+                        <label>Baru</label>
+                        <input type="text" class="border p-2 w-full" required>
+                    </div>
+                </div>
+                <div class="mb-4 w-1/2">
+                    <label>Merek Meter</label>
+                    <div class="ml-10">
+                        <label>Lama</label>
+                        <select class="border p-2 w-full" required>
+                            <option value="">Pilih Merek Meter Lama</option>
+                            <option value="Merek1">Merek1</option>
+                            <option value="Merek2">Merek2</option>
+                            <option value="Merek3">Merek3</option>
+                        </select>
+                    </div <div class="ml-10 mt-2">
+                        <label>Baru</label>
+                        <select class="border p-2 w-full" required>
+                            <option value="">Pilih Merek Meter Baru</option>
+                            <option value="Merek1">Merek1</option>
+                            <option value="Merek2">Merek2</option>
+                            <option value="Merek3">Merek3</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-4">
+                <label>Aksesoris tambahan</label>
+                <input type="text" class="border p-2 w-full">
+            </div>
+            <div class="mb-4">
+                <label>Upload Foto</label>
+                <div class="mt-2">
+                    <label>Sebelum Pekerjaan</label>
+                    <input type="file" accept="image/*" capture="camera" class="border p-2 w-full" onchange="handleFileUpload(event, 'before')">
+                </div>
+                <div class="mt-2">
+                    <label>Sementara Pekerjaan</label>
+                    <input type="file" accept="image/*" capture="camera" class="border p-2 w-full" onchange="handleFileUpload(event, 'during')">
+                </div>
+                <div class="mt-2">
+                    <label>Pekerjaan Selesai</label>
+                    <input type="file" accept="image/*" capture="camera" class="border p-2 w-full" onchange="handleFileUpload(event, 'after')">
+                </div>
+            </div>
+        </div>
+        <button type="submit" class="mt-4 bg-blue-500 text-white p-2">Kirim</button>
+    </form>
+
+    <script>
+        document.getElementById('uploadForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData.entries());
+            const token = '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'; // Token akses Anda
+            const repo = 'YOUR_USERNAME/YOUR_REPOSITORY'; // Ganti dengan username dan nama repositori Anda
+            const fileContent = JSON.stringify(data, null, 2);
+            const response = await fetch(`https://api.github.com/repos/${repo}/contents/your_file_name.json`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `token ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    message: 'Menambahkan data form',
+                    content: btoa(fileContent), // Mengencode konten ke base64
+                    sha: '' // Jika file sudah ada, masukkan SHA file tersebut
+                })
+            });
+
+            if (response.ok) {
+                alert('Data berhasil disimpan ke GitHub!');
+            } else {
+                alert('Terjadi kesalahan saat menyimpan data ke GitHub.');
+            }
+        });
+
+        async function handleFileUpload(event, stage) {
+            const file = event.target.files[0];
+            if (file.size > 500 * 1024) { // Jika file lebih besar dari 500 KB
+                const compressedFile = await compressImage(file);
+                // Simpan compressedFile untuk pengiriman
+                console.log(`File ${stage} telah dikompresi`);
+            } else {
+                // Simpan file untuk pengiriman
+                console.log(`File ${stage} tidak perlu dikompresi`);
+            }
+        }
+
+        function compressImage(file) {
+            return new Promise((resolve, reject) => {
+                const img = new Image();
+                const reader = new FileReader();
+
+                reader.onload = function(event) {
+                    img.src = event.target.result;
+                };
+
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+
+                    const MAX_WIDTH = 800; // Anda dapat menyesuaikan ini
+                    const scaleSize = MAX_WIDTH / img.width;
+                    canvas.width = MAX_WIDTH;
+                    canvas.height = img.height * scaleSize;
+
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+                    canvas.toBlob(function(blob) {
+                        resolve(blob);
+                    }, 'image/jpeg', 0.7); // Menggunakan kualitas 70%
+                };
+
+                reader.onerror = function(error) {
+                    reject(error);
+                };
+
+                reader.readAsDataURL(file);
+            });
+        }
+    </script>
+</body>
+</html>
