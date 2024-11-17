@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lampiran Dokumentasi Kinerja</title>
+    <link href="css/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com">
+    </script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js">
+    </script>
+  
+    <style>
+        @media print {
+                    .no-print {
+                        display: none !important;
+                    }
+                    
+                    .table-container {
+                        max-width: 100%;
+                        margin: 0;
+                    }
+                    
+                    .photo-cell img {
+                        max-height: 4cm;
+                    }
+
+                    @page {
+                        size: auto; /* Menghapus ukuran kertas yang ditetapkan */
+                        margin: 0; /* Menghapus margin */
+                    }
+
+                    /* Pastikan kolom nomor menyesuaikan lebar otomatis */
+                    .number-cell {
+                        width: auto; /* Biarkan lebar otomatis */
+                    }
+                }
+
+
+        .photo-cell {
+            vertical-align: middle;
+            text-align: center;
+            padding: 0.5rem;
+            width: 25%; /* Mengurangi lebar kolom foto untuk memberi ruang lebih */
+        }
+        
+        .photo-cell img {
+            max-width: 100%;
+            height: auto;
+            object-fit: contain;
+            display: inline-block;
+            max-height: 150px;
+        }
+    
+        .number-cell {
+            white-space: nowrap; /* Mencegah nomor terputus */
+            padding: 4px; /* Mengurangi padding untuk menghemat ruang */
+            font-size: 10px; /* Mengurangi ukuran font */
+            text-align: center; /* Menyelaraskan nomor ke tengah */
+        }
+    
+        .table-container {
+            overflow-x: auto;
+            margin: 0 auto;
+            width: 100%;
+            max-width: calc(100% - 2rem);
+        }
+    
+        table {
+            table-layout: auto; /* Mengizinkan lebar kolom disesuaikan dengan konten */
+            width: 100%;
+            border-collapse: collapse;
+        }
+    
+        th, td {
+            border: 1px solid black;
+            padding: 4px; /* Mengurangi padding untuk menghemat ruang */
+            font-size: 10px; /* Mengurangi ukuran font untuk semua sel */
+        }
+    
+        .activity-cell {
+            text-align: left;
+            padding: 4px; /* Mengurangi padding untuk menghemat ruang */
+        }
+    
+        .action-button {
+            margin: 2px;
+            display: block;
+            width: 100%;
+        }
+    
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+            
+            .table-container {
+                max-width: 100%;
+                margin: 0;
+            }
+            
+            .photo-cell img {
+                max-height: 4cm;
+            }
+    
+            @page {
+                size: auto; /* Menghapus ukuran kertas yang ditetapkan */
+                margin: 0; /* Menghapus margin */
+            }
+    
+            /* Pastikan kolom nomor menyesuaikan lebar otomatis */
+            .number-cell {
+                width: auto; /* Biarkan lebar otomatis */
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="max-w-6xl mx-auto p-4">
+        <div class="bg-white rounded px-8 pt-6 pb-8 mb-4">
+            <div class="text-center mb-6">
+                <h1 class="font-bold text-xl">LAMPIRAN</h1>
+                <h2 class="font-bold text-xl">DOKUMENTASI KINERJA SUB BAGIAN MEKANIKAL ELECTRICAL POMPA & GENSET</h2>
+                <h3 class="font-bold text-xl" id="periodText"></h3>
+            </div>
+
+            <div class="mb-6">
+                <p class="text-gray-700">Berdasarkan dokumentasi kegiatan dilapangan, berikut lampiran foto kegiatan Tim Mekanikal Electrical Pompa dan Genset</p>
+            </div>
+
+            <div class="mb-6 no-print">
+                <a href="inputtukin.html" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline inline-block mr-2">
+                    Tambah Data
+                </a>
+                <button onclick="window.print()" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline inline-block">
+                    Cetak
+                </button>
+                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline inline-block no-print" onclick="sharePageAsPDF()">
+                    <i class="fas fa-share-alt">
+                    </i>
+                    Bagikan
+                </button>
+            </div>
+
+            <div class="table-container">
+                <table class="min-w-full" id="mainTable">
+                    <thead>
+                        <tr class="bg-gray-100">
+                            <th class="border px-4 py-2">NO</th>
+                            <th class="border px-4 py-2">KETERANGAN</th>
+                            <th class="border px-4 py-2">SEBELUM PEKERJAAN</th>
+                            <th class="border px-4 py-2">SEMENTARA PEKERJAAN</th>
+                            <th class="border px-4 py-2">PEKERJAAN SELESAI</th>
+                            <th class="border px-4 py-2 no-print">AKSI</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <!-- Data akan diisi di sini -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function sharePageAsPDF() {
+            const element = document.body;
+            const opt = {
+                margin: 1,
+                filename: 'page.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+            };
+
+            // Tambahkan fallback untuk browser yang tidak mendukung Web Share API
+            html2pdf().from(element).set(opt).toPdf().get('pdf').then(function (pdf) {
+                const blob = pdf.output('blob');
+                const file = new File([blob], 'page.pdf', { type: 'application/pdf' });
+
+                if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                    navigator.share({
+                        files: [file],
+                        title: document.title,
+                        text: 'Check out this PDF!',
+                    }).then(() => {
+                        console.log('Thanks for sharing!');
+                    }).catch(console.error);
+                } else {
+                    // Fallback: Buat link download jika sharing tidak didukung
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'page.pdf';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                }
+            });
+        }
+
+
+        // Fungsi untuk menampilkan data dari localStorage
+        function displayData() {
+            const existingData = JSON.parse(localStorage.getItem('taskData')) || [];
+            const tableBody = document.getElementById('tableBody');
+            tableBody.innerHTML = '';
+
+            existingData.forEach((item, index) => {
+                const dateParts = item.tanggal.split('-');
+                const date = new Date(`${dateParts[0]}-${dateParts[1]}-${dateParts[2]}`);
+                const options = { weekday: 'long', year: 'numeric', month: '2-digit', day: '2-digit' };
+                const formattedDate = date.toLocaleDateString('id-ID', options).replace(/,/, '');
+                
+                const startTimeParts = item.sebelum_pekerjaan_time.split(':');
+                const endTimeParts = item.pekerjaan_selesai_time.split(':');
+                const startHour = parseInt(startTimeParts[0]);
+                const startMinute = parseInt(startTimeParts[1]);
+                const endHour = parseInt(endTimeParts[0]);
+                const endMinute = parseInt(endTimeParts[1]);
+                
+                const durationHours = endHour - startHour + (endMinute - startMinute) / 60;
+                const formattedTime = `Jam ${startHour} sampai Jam ${endHour} (${durationHours.toFixed(0)} jam)`;
+
+                const photoRow = document.createElement('tr');
+                photoRow.innerHTML = `
+                    <td class="border px-4 py-2 number-cell">${index + 1}</td>
+                    <td class="border px-4 py-2 activity-cell">
+                        <strong>Tanggal:</strong> ${formattedDate}<br>
+                        <strong>Nama Kegiatan:</strong> ${item.nama_kegiatan}<br>
+                        <strong>Petugas:</strong> ${item.petugas}<br>
+                        <strong>Waktu:</strong> ${formattedTime}
+                    </td>
+                    <td class="border px-4 py-2 photo-cell"><img src="${item.sebelum_pekerjaan}" alt="Sebelum Pekerjaan"></td>
+                    <td class="border px-4 py-2 photo-cell"><img src="${item.sementara_pekerjaan}" alt="Sementara Pekerjaan"></td>
+                    <td class="border px-4 py-2 photo-cell"><img src="${item.pekerjaan_selesai}" alt="Pekerjaan Selesai"></td>
+                    <td class="border px-4 py-2 no-print">
+                        <a href="inputtukin.html?mode=edit&id=${item.id}" class="action-button bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-2 rounded">Edit</a>
+                        <button onclick="deleteData('${item.id}')" class="action-button bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded">Hapus</button>
+                    </td>
+                `;
+                tableBody.appendChild(photoRow);
+            });
+        }
+
+        // Fungsi untuk menghapus data
+        function deleteData(id) {
+            if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
+                const existingData = JSON.parse(localStorage.getItem('taskData')) || [];
+                const updatedData = existingData.filter(item => item.id != id);
+                localStorage.setItem('taskData', JSON.stringify(updatedData));
+                displayData();
+                updatePeriodText();
+            }
+        }
+
+        // Fungsi untuk memperbarui teks periode
+        function updatePeriodText() {
+            const existingData = JSON.parse(localStorage.getItem('taskData')) || [];
+            const periodText = document.getElementById('periodText');
+            
+            if (existingData.length > 0) {
+                const dates = existingData.map(item => {
+                    const dateParts = item.tanggal.split('/');
+                    return new Date(`${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`);
+                });
+
+                const minDate = new Date(Math.min.apply(null, dates));
+                const monthNames = ["JANUARI", "FEBRUARI", "MARET", "APRIL", "MEI", "JUNI", "JULI", "AGUSTUS", "SEPTEMBER", "OKTOBER", "NOVEMBER", "DESEMBER"];
+                const year = minDate.getFullYear();
+                const month = monthNames[minDate.getMonth()];
+
+                periodText.textContent = `${month} ${year}`;
+            } else {
+                periodText.textContent = 'Tidak ada data';
+            }
+        }
+
+        // Memanggil fungsi untuk menampilkan data dan memperbarui teks periode saat halaman dimuat
+        window.onload = function() {
+            displayData();
+            updatePeriodText();
+        };
+    </script>
+</body>
+</html>
