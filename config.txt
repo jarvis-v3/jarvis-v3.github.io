@@ -1,0 +1,11 @@
+# Konfigurasi Pengguna Mekanikal
+user_mekanikal=admin
+password_mekanikal=mekanikal
+
+# Konfigurasi Pengguna Kebocoran
+user_kebocoran=admin
+password_kebocoran=kebocoran
+
+# Konfigurasi Pengguna Meter
+user_meter=admin
+password_meter=meter
