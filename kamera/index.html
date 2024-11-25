@@ -7,34 +7,22 @@
 </head>
 <body>
     <h1>Streaming Kamera - Admin</h1>
+    <button id="startButton">Start Camera</button>
     <video id="video" width="640" height="480" autoplay></video>
     <script>
         const video = document.getElementById('video');
+        const startButton = document.getElementById('startButton');
 
-        // Meminta akses ke kamera
-        navigator.mediaDevices.getUser Media({ video: true })
-            .then(stream => {
-                video.srcObject = stream;
-
-                // Menyiapkan WebSocket untuk mengirim video ke klien
-                const mediaRecorder = new MediaRecorder(stream);
-                const socket = new WebSocket('ws://localhost:8080'); // Ganti dengan URL server WebSocket Anda
-
-                mediaRecorder.ondataavailable = event => {
-                    if (socket.readyState === WebSocket.OPEN) {
-                        socket.send(event.data);
-                    }
-                };
-
-                mediaRecorder.start(100); // Mengirim data setiap 100ms
-
-                socket.onopen = () => {
-                    console.log('Connected to WebSocket server');
-                };
-            })
-            .catch(error => {
-                console.error('Error accessing media devices.', error);
-            });
+        startButton.addEventListener('click', () => {
+            navigator.mediaDevices.getUser Media({ video: true })
+                .then(stream => {
+                    video.srcObject = stream;
+                    // Additional WebSocket code can go here
+                })
+                .catch(error => {
+                    console.error('Error accessing media devices.', error);
+                });
+        });
     </script>
 </body>
 </html>
