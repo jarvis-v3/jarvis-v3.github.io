@@ -68,40 +68,6 @@
             </tbody>
         </table>
     </div>
-    < script>
-        function addVote(candidate) {
-            fetch('http://localhost:3000/vote', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ candidate: candidate }),
-            })
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById(`voteCount${candidate}`).innerText = data.votes[`candidate${candidate}`];
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
-        }
-
-        function loadVotes() {
-            fetch('http://localhost:3000/votes')
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('voteCount1').innerText = data.candidate1;
-                document.getElementById('voteCount2').innerText = data.candidate2;
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
-        }
-
-        // Load initial vote counts from server
-        document.addEventListener('DOMContentLoaded', () => {
-            loadVotes();
-        });
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
