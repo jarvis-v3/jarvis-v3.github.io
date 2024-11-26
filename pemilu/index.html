@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Pemungutan Suara Kepala Daerah</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"/>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+        .triangle-up {
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-bottom: 20px solid green;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .triangle-down {
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 20px solid red;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-100 p-6">
+    <h1 class="text-3xl font-bold mb-6 text-center">Pemungutan Suara Kepala Daerah Toraja Utara</h1>
+    <div class="bg-white p-6 rounded-lg shadow-lg max-w-4xl mx-auto">
+        <table class="min-w-full bg-white">
+            <thead>
+                <tr>
+                    <th class="py-2 px-4 border-b-2 border-gray-300 text-left leading-tight">Foto</th>
+                    <th class="py-2 px-4 border-b-2 border-gray-300 text-left leading-tight">Jumlah Suara</th>
+                    <th class="py-2 px-4 border-b-2 border-gray-300 text-left leading-tight">Aksi</th>
+                </tr>
+            </thead>
+            <tbody id="voteTable">
+                <tr>
+                    <td class="py-2 px-4 border-b border-gray-300">
+                        <img alt="Pasangan 1: Gambar pasangan calon nomor urut 1" class="w-24 h-24 object-cover" height="100" src="https://storage.googleapis.com/a1aa/image/S45oUKFn7WbXAhFwH11PweNU0kkFS5MW2dVg1yMSOu0cfu0TA.jpg" width="100"/>
+                    </td>
+                    <td class="py-2 px-4 border-b border-gray-300" id="voteCount1">0</td>
+                    <td class="py-2 px-4 border-b border-gray-300">
+                        <div class="flex flex-col items-center space-y-2">
+                            <div class="triangle-up cursor-pointer" onclick="addVote(1)"></div>
+                            <div class="triangle-down cursor-pointer" onclick="subtractVote(1)"></div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="py-2 px-4 border-b border-gray-300">
+                        <img alt="Pasangan 2: Gambar pasangan calon nomor urut 2" class="w-24 h-24 object-cover" height="100" src="https://storage.googleapis.com/a1aa/image/BzeoeRL0qohfXItfgYnEpD1kGpZvpw8L7EAMHzzayYkd77SPB.jpg" width="100"/>
+                    </td>
+                    <td class="py-2 px-4 border-b border-gray-300" id="voteCount2">0</td>
+                    <td class="py-2 px-4 border-b border-gray-300">
+                        <div class="flex flex-col items-center space-y-2">
+                            <div class="triangle-up cursor-pointer" onclick="addVote(2)"></div>
+                            <div class="triangle-down cursor-pointer" onclick=" subtractVote(2)"></div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <script>
+        function addVote(candidate) {
+            let voteCount = localStorage.getItem(`voteCount${candidate}`) || 0;
+            voteCount++;
+            localStorage.setItem(`voteCount${candidate}`, voteCount);
+            document.getElementById(`voteCount${candidate}`).innerText = voteCount;
+        }
+
+        function subtractVote(candidate) {
+            let voteCount = localStorage.getItem(`voteCount${candidate}`) || 0;
+            if (voteCount > 0) {
+                voteCount--;
+                localStorage.setItem(`voteCount${candidate}`, voteCount);
+                document.getElementById(`voteCount${candidate}`).innerText = voteCount;
+            }
+        }
+
+        // Load initial vote counts from local storage
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('voteCount1').innerText = localStorage.getItem('voteCount1') || 0;
+            document.getElementById('voteCount2').innerText = localStorage.getItem('voteCount2') || 0;
+        });
+    </script>
+</body>
+</html>
