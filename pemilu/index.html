@@ -61,34 +61,46 @@
                     <td class="py-2 px-4 border-b border-gray-300">
                         <div class="flex flex-col items-center space-y-2">
                             <div class="triangle-up cursor-pointer" onclick="addVote(2)"></div>
-                            <div class="triangle-down cursor-pointer" onclick=" subtractVote(2)"></div>
+                            <div class="triangle-down cursor-pointer" onclick="subtractVote(2)"></div>
                         </div>
                     </td>
                 </tr>
             </tbody>
         </table>
     </div>
-    <script>
+    < script>
         function addVote(candidate) {
-            let voteCount = localStorage.getItem(`voteCount${candidate}`) || 0;
-            voteCount++;
-            localStorage.setItem(`voteCount${candidate}`, voteCount);
-            document.getElementById(`voteCount${candidate}`).innerText = voteCount;
+            fetch('http://localhost:3000/vote', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ candidate: candidate }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById(`voteCount${candidate}`).innerText = data.votes[`candidate${candidate}`];
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
         }
 
-        function subtractVote(candidate) {
-            let voteCount = localStorage.getItem(`voteCount${candidate}`) || 0;
-            if (voteCount > 0) {
-                voteCount--;
-                localStorage.setItem(`voteCount${candidate}`, voteCount);
-                document.getElementById(`voteCount${candidate}`).innerText = voteCount;
-            }
+        function loadVotes() {
+            fetch('http://localhost:3000/votes')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('voteCount1').innerText = data.candidate1;
+                document.getElementById('voteCount2').innerText = data.candidate2;
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
         }
 
-        // Load initial vote counts from local storage
+        // Load initial vote counts from server
         document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('voteCount1').innerText = localStorage.getItem('voteCount1') || 0;
-            document.getElementById('voteCount2').innerText = localStorage.getItem('voteCount2') || 0;
+            loadVotes();
         });
     </script>
 </body>
