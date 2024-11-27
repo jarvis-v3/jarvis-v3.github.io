@@ -1,73 +1,76 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="utf-8"/>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>Pemungutan Suara Kepala Daerah</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"/>
-    <style>
-        body {
-            font-family: 'Roboto', sans-serif;
+<html>
+ <head>
+  <title>
+   Diagram Batang Perhitungan Suara
+  </title>
+  <script src="https://cdn.tailwindcss.com">
+  </script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  <script>
+   function increaseVote(candidate) {
+            const voteElement = document.getElementById(`vote-${candidate}`);
+            let currentVotes = parseInt(voteElement.innerText);
+            currentVotes += 1;
+            voteElement.innerText = currentVotes;
+            document.getElementById(`bar-${candidate}`).style.height = `${currentVotes * 2}px`;
         }
-        .triangle-up {
-            width: 0;
-            height: 0;
-            border-left: 10px solid transparent;
-            border-right: 10px solid transparent;
-            border-bottom: 20px solid green;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+        function decreaseVote(candidate) {
+            const voteElement = document.getElementById(`vote-${candidate}`);
+            let currentVotes = parseInt(voteElement.innerText);
+            if (currentVotes > 0) {
+                currentVotes -= 1;
+                voteElement.innerText = currentVotes;
+                document.getElementById(`bar-${candidate}`).style.height = `${currentVotes * 2}px`;
+            }
         }
-        .triangle-down {
-            width: 0;
-            height: 0;
-            border-left: 10px solid transparent;
-            border-right: 10px solid transparent;
-            border-top: 20px solid red;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-    </style>
-</head>
-<body class="bg-gray-100 p-6">
-    <h1 class="text-3xl font-bold mb-6 text-center">Pemungutan Suara Kepala Daerah Toraja Utara</h1>
-    <div class="bg-white p-6 rounded-lg shadow-lg max-w-4xl mx-auto">
-        <table class="min-w-full bg-white">
-            <thead>
-                <tr>
-                    <th class="py-2 px-4 border-b-2 border-gray-300 text-left leading-tight">Foto</th>
-                    <th class="py-2 px-4 border-b-2 border-gray-300 text-left leading-tight">Jumlah Suara</th>
-                    <th class="py-2 px-4 border-b-2 border-gray-300 text-left leading-tight">Aksi</th>
-                </tr>
-            </thead>
-            <tbody id="voteTable">
-                <tr>
-                    <td class="py-2 px-4 border-b border-gray-300">
-                        <img alt="Pasangan 1: Gambar pasangan calon nomor urut 1" class="w-24 h-24 object-cover" height="100" src="https://storage.googleapis.com/a1aa/image/S45oUKFn7WbXAhFwH11PweNU0kkFS5MW2dVg1yMSOu0cfu0TA.jpg" width="100"/>
-                    </td>
-                    <td class="py-2 px-4 border-b border-gray-300" id="voteCount1">0</td>
-                    <td class="py-2 px-4 border-b border-gray-300">
-                        <div class="flex flex-col items-center space-y-2">
-                            <div class="triangle-up cursor-pointer" onclick="addVote(1)"></div>
-                            <div class="triangle-down cursor-pointer" onclick="subtractVote(1)"></div>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="py-2 px-4 border-b border-gray-300">
-                        <img alt="Pasangan 2: Gambar pasangan calon nomor urut 2" class="w-24 h-24 object-cover" height="100" src="https://storage.googleapis.com/a1aa/image/BzeoeRL0qohfXItfgYnEpD1kGpZvpw8L7EAMHzzayYkd77SPB.jpg" width="100"/>
-                    </td>
-                    <td class="py-2 px-4 border-b border-gray-300" id="voteCount2">0</td>
-                    <td class="py-2 px-4 border-b border-gray-300">
-                        <div class="flex flex-col items-center space-y-2">
-                            <div class="triangle-up cursor-pointer" onclick="addVote(2)"></div>
-                            <div class="triangle-down cursor-pointer" onclick="subtractVote(2)"></div>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+  </script>
+ </head>
+ <body class="bg-gray-100 p-6">
+  <div class="container mx-auto">
+   <h1 class="text-3xl font-bold text-center mb-8">
+    Diagram Batang Perhitungan Suara
+   </h1>
+   <div class="grid grid-cols-2 gap-4">
+    <!-- Bar 1 -->
+    <div class="flex flex-col items-center">
+     <div class="bg-blue-500 w-12 h-0 flex items-end justify-center" id="bar-1">
+      <span class="text-white text-lg" id="vote-1">
+       0
+      </span>
+     </div>
+     <img alt="Foto Paslon 1" class="mt-2 rounded-full" height="100" src="1.jpg" width="100"/>
+     <div class="flex mt-2 space-x-2">
+      <button class="bg-green-500 text-white px-4 py-2 rounded" onclick="increaseVote(1)">
+       <i class="fas fa-arrow-up">
+       </i>
+      </button>
+      <button class="bg-red-500 text-white px-4 py-2 rounded" onclick="decreaseVote(1)">
+       <i class="fas fa-arrow-down">
+       </i>
+      </button>
+     </div>
     </div>
-    <script src="script.js"></script>
-</body>
+    <!-- Bar 2 -->
+    <div class="flex flex-col items-center">
+     <div class="bg-blue-500 w-12 h-0 flex items-end justify-center" id="bar-2">
+      <span class="text-white text-lg" id="vote-2">
+       0
+      </span>
+     </div>
+     <img alt="Foto Paslon 2" class="mt-2 rounded-full" height="100" src="2.jpg" width="100"/>
+     <div class="flex mt-2 space-x-2">
+      <button class="bg-green-500 text-white px-4 py-2 rounded" onclick="increaseVote(2)">
+       <i class="fas fa-arrow-up">
+       </i>
+      </button>
+      <button class="bg-red-500 text-white px-4 py-2 rounded" onclick="decreaseVote(2)">
+       <i class="fas fa-arrow-down">
+       </i>
+      </button>
+     </div>
+    </div>
+   </div>
+  </div>
+ </body>
 </html>
