@@ -43,11 +43,6 @@
             <td>Tanggal kegiatan (format YYYY-MM-DD)</td>
         </tr>
         <tr>
-            <td>sebelumpekerjaan</td>
-            <td>BLOB</td>
-            <td>Foto sebelum pekerjaan (binary data)</td>
-        </tr>
-        <tr>
             <td>namakegiatan</td>
             <td>TEXT</td>
             <td>Nama kegiatan</td>
@@ -56,6 +51,11 @@
             <td>jamdimulai</td>
             <td>TEXT</td>
             <td>Waktu dimulai (format HH:MM)</td>
+        </tr>
+        <tr>
+            <td>sebelumpekerjaan</td>
+            <td>BLOB</td>
+            <td>Foto sebelum pekerjaan (binary data)</td>
         </tr>
         <tr>
             <td>sementarapekerjaan</td>
